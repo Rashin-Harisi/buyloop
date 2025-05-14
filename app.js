@@ -1,8 +1,9 @@
 const express = require('express')
 const dotenv = require("dotenv");
 const SwaggerConfig = require('./src/config/swagger.config');
-const { NotFound, ErrorHandler } = require('./src/common/errorHandler');
-const { mainRouter } = require('./src/moduls/auth/auth.routes');
+const { NotFound, ErrorHandler } = require('./src/common/exception/errorHandler');
+const { AuthRoutes } = require('./src/routes');
+
 
 dotenv.config()
 function main(){
@@ -14,7 +15,7 @@ function main(){
     app.get('/', (req,res)=>{
         res.send("Hi from Backend")
     })
-    app.use(mainRouter)
+    app.use(AuthRoutes)
     app.use(NotFound)
     app.use(ErrorHandler)
     app.listen(process.env.PORT,()=>{

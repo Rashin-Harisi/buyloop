@@ -1,8 +1,8 @@
 /**
  * @swagger
  * tags:
- *   name: Auth
- *   description: Auth module and routes
+ *   - name: Auth
+ *     description: Auth module and routes
  */
 
 /**
@@ -15,6 +15,16 @@
  *         - mobile
  *       properties:
  *         mobile:
+ *           type: string
+ *     CheckOTP:
+ *       type: object
+ *       required:
+ *         - mobile
+ *         - code
+ *       properties:
+ *         mobile:
+ *           type: string
+ *         code:
  *           type: string
  */
 
@@ -29,10 +39,26 @@
  *       content:
  *         application/x-www-form-urlencoded:
  *           schema:
- *             $ref: "#/components/schemas/SendOTP"
+ *             $ref: '#/components/schemas/SendOTP'
  *     responses:
  *       200:
  *         description: OTP sent successfully
+ *       400:
+ *         description: Invalid request
+ *
+ * /auth/check-otp:
+ *   post:
+ *     summary: Check OTP
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/CheckOTP'
+ *     responses:
+ *       200:
+ *         description: OTP verified successfully
  *       400:
  *         description: Invalid request
  */

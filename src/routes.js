@@ -1,9 +1,9 @@
-const authRouters = require('./moduls/auth/auth.routes')
+const {mainRouter} = require('./moduls/auth/auth.routes')
 
 const router = require('express').Router()
 
 
-router.post("/auth", authRouters)
+router.use("/auth", mainRouter)
 
 module.exports={
     AuthRoutes : router

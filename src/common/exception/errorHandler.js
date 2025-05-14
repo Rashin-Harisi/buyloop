@@ -9,10 +9,12 @@ const NotFound = (req,res,next)=>{
 
 }
 const ErrorHandler = (err,req,res,next)=>{
+    let status = err?.status ?? err?.statusCode ?? err?.code;
+    if(!status || isNaN(+status) || status>511 || status<200 ) status = 500;
     return res.json({
-        statusCode : err.status || 500,
+        statusCode : status,
         error:{
-            message: err.message || "Internal Server Error"
+            message: err?.message ?? err?.stack ?? "Internal Server Error"
         }
     })
 }
