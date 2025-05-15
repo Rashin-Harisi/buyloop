@@ -3,6 +3,7 @@ const userModel = require("../user/user.model")
 const { randomInt } = require("crypto")
 const createHttpError = require("http-errors")
 const { AuthMessage } = require("./auth.message")
+const jwt = require('jsonwebtoken')
 
 class AuthService{
     #model
@@ -17,7 +18,6 @@ class AuthService{
             code : randomInt(10000,99999),
             expiresIn: now + 1000 * 60 * 2 ,
         }
-        console.log(now,otp)
         if(!user){
             const newUser = await this.#model.create({mobile,otp})
             return newUser
@@ -36,14 +36,19 @@ class AuthService{
         if(user?.otp?.code !== code) throw new createHttpError.NotFound(AuthMessage.OTPCodeIsIncorrect)
         if(!user.verifiedMobile){
             user.verifiedMobile = true;
-            await user.save()
         }
-        return user;
+        const token = this.signToken({mobile, id: user._id})
+        user.accessToken = token;
+        await user.save()
+        return token;
     }
     async checkExistingMobileNumber(mobile){
         const user = await this.#model.findOne({mobile})
         if(!user) throw new createHttpError.NotFound(AuthMessage.UserNotFound)
         return user
+    }
+    signToken(payload){
+        return jwt.sign(payload,process.env.SECRET_KEY_JWT,{expiresIn: "1y"})
     }
 }
 

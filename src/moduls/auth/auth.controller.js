@@ -25,9 +25,12 @@ class AuthController{
     async checkOTP(req,res,next){
         try {
             const {mobile,code} = req.body;
-            await this.#service.checkOTP(mobile,code)
-            return res.json({
-                message : AuthMessage.LoginSuccessfully
+            const token = await this.#service.checkOTP(mobile,code)
+            return res.cookie("access_token",token,{
+                httpOnly: true,
+                secure: process.env.ENVIRONMENT === "production"
+            }).status(200).json({
+                message : AuthMessage.LoginSuccessfully,
             })
         } catch (error) {
             next(error)
