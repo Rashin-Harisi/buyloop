@@ -36,6 +36,15 @@ class AuthController{
             next(error)
         }
     }
+    async logout(req,res,next){
+        try {
+          return  res.clearCookie("access_token").status(200).json({
+            message: AuthMessage.LogoutSuccessful
+          })
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 module.exports= new AuthController()

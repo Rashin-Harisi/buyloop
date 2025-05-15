@@ -61,4 +61,13 @@
  *         description: OTP verified successfully
  *       400:
  *         description: Invalid request
+ * /auth/logout:
+ *   get:
+ *     summary: Logout
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: logged out successfully
+ *       400:
+ *         description: Invalid request
  */

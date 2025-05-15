@@ -13,7 +13,7 @@
  *     tags: [User]
  *     responses:
  *       200:
- *         description: OTP sent successfully
+ *         description: get user's profile successfully
  *       400:
  *         description: Invalid request
  */
