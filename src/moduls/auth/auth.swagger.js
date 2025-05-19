@@ -25,7 +25,7 @@
  *         mobile:
  *           type: string
  *         code:
- *           type: string
+ *           type: string 
  */
 
 /**
