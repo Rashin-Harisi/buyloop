@@ -34,7 +34,7 @@ class CategoryService {
 
     }
     async find(){
-        return await this.#model.find({})
+        return await this.#model.find({parent : {$exists: false}})
 
     }
     async findExistedParentById(id){

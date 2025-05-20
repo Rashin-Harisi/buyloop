@@ -15,16 +15,15 @@ const CategorySchema = new Schema({
         type : String,
         required: true,
     },
-    parenst: {
+    parent: {
         type: Schema.Types.ObjectId,
         ref: "Category",
         required: false,
     },
-    parenst: {
+    parents: {
         type: [Schema.Types.ObjectId],
         default: [],
         required: false,
-        ref: "Category"
     }
 },{
     toJSON: {virtuals: true},
@@ -33,11 +32,17 @@ const CategorySchema = new Schema({
 })
 
 CategorySchema.virtual("children",{
-    ref: "Category",
+    ref: "category",
     localField: "_id",
     foreignField: "parent"
 })
 
+function autoPopulation(next){
+    if (this.op !== 'find' && this.op !== 'findOne') return next();
+    this.populate([{path: "children"}])
+    next()
+}
+CategorySchema.pre("find",autoPopulation).pre("findOne",autoPopulation)
 const CategoryModel = model("category",CategorySchema)
 
 module.exports = CategoryModel
