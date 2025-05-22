@@ -7,7 +7,7 @@ const OptionSchema = new Schema({
     enum: {type: Array, default: []},
     guid: {type: String, required: false},
     required: {type: Boolean, required: true, default: false},
-    category: {type: Types.ObjectId, ref: "Category", required: true}
+    category: {type: Types.ObjectId, ref: "category", required: true}
 })
 
 const OptionModel = model("option", OptionSchema)
