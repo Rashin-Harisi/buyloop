@@ -1,7 +1,8 @@
 const OptionsMessage = {
     Create  : "Option is created successfully.",
-    NotFound: "Gategory not found!",
+    NotFound: "Gategory or option not found!",
     AlreadyExisted : "Option with this key and category is already existed.",
+    DeleteOption: "Otion deleted successfully"
 }
 
 module.exports = OptionsMessage

@@ -25,6 +25,8 @@
  *           type: string
  *         guid:
  *           type: string
+ *         required:
+ *           type: boolean
  *         type:
  *           type: string
  *           enum:
@@ -73,6 +75,17 @@
  *     responses:
  *       200:
  *         description: get all options of a category by categoryId successfully
+ * /options/by-category-slug/{slug}:
+ *   get:
+ *     summary: get all options of a category by category-slug
+ *     parameters:
+ *       -  in: path
+ *          name: slug
+ *          type: string
+ *     tags: [Options]
+ *     responses:
+ *       200:
+ *         description: get all options of a category by slug successfully
  * /options/{id}:
  *   get:
  *     summary: get all options of a category by id
@@ -84,4 +97,18 @@
  *     responses:
  *       200:
  *         description: get all options of a category by id successfully
+ */
+/**
+ * @swagger
+ * /options/{id}:
+ *   delete:
+ *     summary: remove an option by id
+ *     parameters:
+ *       -  in: path
+ *          name: id
+ *          type: string
+ *     tags: [Options]
+ *     responses:
+ *       200:
+ *         description: option deleted by id successfully
  */

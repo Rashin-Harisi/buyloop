@@ -13,7 +13,7 @@ class CategoryService {
     }
     async create(CategoryData){
         if(CategoryData?.parent && isValidObjectId(CategoryData.parent)){
-            const existedCategoryt = await this.findExistedParentById(CategoryData.parent)
+            const existedCategoryt = await this.findExistedCategoryById(CategoryData.parent)
             CategoryData.parent = existedCategoryt._id
             CategoryData.parents=[
                 ...new Set(
@@ -37,7 +37,7 @@ class CategoryService {
         return await this.#model.find({parent : {$exists: false}})
 
     }
-    async findExistedParentById(id){
+    async findExistedCategoryById(id){
         const category = await this.#model.findById(id)
         if(!category) throw new createHttpError.NotFound(CategoryMessage.NotFound)
         return category
