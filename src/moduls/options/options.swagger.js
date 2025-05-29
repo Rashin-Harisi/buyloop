@@ -39,7 +39,35 @@
  *           items:
  *              type: string
  */
-
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UpdateOptions:
+ *       type: object
+ *       properties:
+ *         title:
+ *           type: string
+ *         key:
+ *           type: string
+ *         category:
+ *           type: string
+ *         guid:
+ *           type: string
+ *         required:
+ *           type: boolean
+ *         type:
+ *           type: string
+ *           enum:
+ *              -   number
+ *              -   string
+ *              -   boolean
+ *              -   array
+ *         enum:
+ *           type: array
+ *           items:
+ *              type: string
+ */
 /**
  * @swagger
  * /options:
@@ -111,4 +139,27 @@
  *     responses:
  *       200:
  *         description: option deleted by id successfully
+ */
+/**
+ * @swagger
+ * /options/{id}:
+ *   put:
+ *     summary: upate an option list by id
+ *     parameters:
+ *       -  in: path
+ *          name: id
+ *          type: string 
+ *     tags: [Options]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateOptions'
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateOptions'
+ *     responses:
+ *       201:
+ *         description: options updated successfully
  */

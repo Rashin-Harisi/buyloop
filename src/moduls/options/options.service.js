@@ -5,6 +5,7 @@ const OptionsMessage = require("./options.message");
 const { default: slugify } = require("slugify");
 const categoryService = require("../category/category.service");
 const { isTrue, isFalse } = require("../../common/utils/functions");
+const { isValidObjectId } = require("mongoose");
 
 class OptionsService {
   #model;
@@ -80,6 +81,39 @@ class OptionsService {
     if(isFalse(OptionData?.required)) OptionData.required = false
     const option = this.#model.create(OptionData);
     return option;
+  }
+  async upateOtipn (id,OptionData){
+    const existedOption = await this.checkOptionById(id)
+    if(OptionData?.category && isValidObjectId(OptionData.category)){
+      const category = await this.#categoryService.findExistedCategoryById(OptionData.category);
+      OptionData.category = category._id;
+    }else{
+      delete OptionData.category 
+    }
+
+    if(OptionData?.slug){
+      OptionData.key = slugify(OptionData.key, {
+        replacement: "_",
+        trim: true,
+        lower: true,
+      });
+      let categoryId = existedOption.category
+      if (OptionData.category) categoryId=OptionData.category 
+      await this.alreadyExistCategoryandKey(OptionData.key, categoryId);
+    }
+    
+    if (OptionData?.enum && typeof OptionData.enum === "string") {
+        OptionData.enum = OptionData.enum.split(",");
+    } else if (!Array.isArray(OptionData.enum)) {
+        delete OptionData.enum ;
+    }
+
+    if(isTrue(OptionData?.required)) OptionData.required = true
+    else if(isFalse(OptionData?.required)) OptionData.required = false 
+    else delete OptionData?.required
+
+    return this.#model.updateOne({_id : id},{$set: OptionData});
+    
   }
   async removeById(id){
     await this.checkOptionById(id)

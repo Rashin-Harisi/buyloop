@@ -9,6 +9,8 @@ router.get("/by-category/:categoryId", optionsController.findByCategoryId)
 router.get("/by-category-slug/:slug", optionsController.findByCategorySlug)
 router.get("/:id", optionsController.findById)
 router.delete("/:id", optionsController.removeById)
+router.put("/:id", optionsController.updateOption)
+
 
 
 

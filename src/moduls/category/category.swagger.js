@@ -50,3 +50,17 @@
  *       200:
  *         description: get all categories successfully
  */
+/**
+ * @swagger
+ * /category/{id}:
+ *   delete:
+ *     summary: delete a category by id
+ *     parameters:
+ *       -  in: path
+ *          name: id
+ *          type: string 
+ *     tags: [Category]
+ *     responses:
+ *       200:
+ *         description: category is deleted successfully
+ */

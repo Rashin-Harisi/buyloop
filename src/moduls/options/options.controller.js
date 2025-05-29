@@ -74,6 +74,26 @@ class OptionsController {
       next(error);
     }
   }
+  async updateOption(req, res, next) {
+    try {
+      const {id} = req.params 
+      const { title, key, enum: list, guid, type, category,required } = req.body;
+      await this.#service.upateOtipn(id,{
+        title,
+        key,
+        enum: list,
+        guid,
+        type,
+        category,
+        required
+      });
+      return res.status(HttpCodes.CREATED).json({
+        message: OptionsMessage.Update,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new OptionsController();
