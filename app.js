@@ -2,8 +2,10 @@ const express = require('express')
 const dotenv = require("dotenv");
 const SwaggerConfig = require('./src/config/swagger.config');
 const { NotFound, ErrorHandler } = require('./src/common/exception/errorHandler');
-const { AuthRoutes } = require('./src/routes');
+const { AllRoutes } = require('./src/routes');
 const cookieParser = require('cookie-parser');
+const expressEjsLayouts = require('express-ejs-layouts');
+const path = require("path");
 
 
 dotenv.config()
@@ -14,10 +16,16 @@ function main(){
     app.use(cookieParser(process.env.SECRET_KEY_COOKIE_PARSE ))
     require("./src/config/mongoose.config")
     SwaggerConfig(app)
+    app.use(express.static("public"))
+    app.use(expressEjsLayouts)
+    app.set("view engine","ejs")
+    app.set("layout", "./layouts/panel/main.ejs")
+    app.set("views", path.join(__dirname, "views"));
+
     app.get('/', (req,res)=>{
-        res.send("Hi from Backend")
+        res.render("./pages/panel/dashbord.ejs")
     })
-    app.use(AuthRoutes)
+    app.use(AllRoutes)
     app.use(NotFound)
     app.use(ErrorHandler)
     app.listen(process.env.PORT,()=>{

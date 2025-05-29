@@ -12,6 +12,7 @@ router.use("/category", mainCategoryRouter)
 router.use("/options", mainOtionRoutes)
 
 
+
 module.exports={
-    AuthRoutes : router
+    AllRoutes : router
 }
