@@ -11,8 +11,17 @@ router.use("/user", mainUserRouter)
 router.use("/category", mainCategoryRouter)
 router.use("/options", mainOtionRoutes)
 
-
-
+router.get('/panel', (req,res)=>{
+    res.render("./pages/panel/dashbord.ejs")
+})
+router.get('/', (req,res)=>{
+    res.locals.layout = "./layouts/website/main.ejs"
+    res.render("./pages/home/main.ejs")
+})
+router.get('/auth/login', (req,res)=>{
+    res.locals.layout = "./layouts/auth/main.ejs"
+    res.render("./pages/auth/main.ejs")
+})
 module.exports={
     AllRoutes : router
 }

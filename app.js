@@ -22,9 +22,7 @@ function main(){
     app.set("layout", "./layouts/panel/main.ejs")
     app.set("views", path.join(__dirname, "views"));
 
-    app.get('/', (req,res)=>{
-        res.render("./pages/panel/dashbord.ejs")
-    })
+    
     app.use(AllRoutes)
     app.use(NotFound)
     app.use(ErrorHandler)
