@@ -1,0 +1,33 @@
+<div class="col-lg-12 d-flex align-items-stretch">
+  <div class="card w-100">
+    <%if(showBack){%>
+    <div class="p-3">
+      <a href="/ads/create" class="btn btn-danger">Back to all categories</a>
+    </div>
+    <%}%>
+    <div class="p-3">
+      <%if(categories && categories.length > 0 ){%>
+      <ul>
+        <%categories.forEach(category => {%>
+        <li>
+          <a
+            href="?slug=<%= category.slug %>"
+            class="w-100 p-3 d-block bg-light text-dark d-flex align-items-center gap-2"
+          >
+            <% if (!showBack) { %>
+            <img
+              src="/assets/icons/<%= category.icon %>.png"
+              alt="<%= category.name %> icon"
+              width="22"
+              height="22"
+            />
+            <%}%>
+            <span><%=category.name%></span>
+          </a>
+        </li>
+        <%})%>
+      </ul>
+      <%}%>
+    </div>
+  </div>
+</div>
