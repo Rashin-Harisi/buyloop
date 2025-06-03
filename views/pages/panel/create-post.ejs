@@ -1,14 +1,15 @@
 <div class="col-lg-12 d-flex align-items-stretch">
   <div class="card w-100">
-    <%if(showBack){%>
+    <% if (showBack) { %>
     <div class="p-3">
       <a href="/ads/create" class="btn btn-danger">Back to all categories</a>
     </div>
-    <%}%>
+    <% } %>
+
     <div class="p-3">
-      <%if(categories && categories.length > 0 ){%>
+      <% if (!options) { %> <% if (categories && categories.length > 0) { %>
       <ul>
-        <%categories.forEach(category => {%>
+        <% categories.forEach(category => { %>
         <li>
           <a
             href="?slug=<%= category.slug %>"
@@ -21,13 +22,106 @@
               width="22"
               height="22"
             />
-            <%}%>
-            <span><%=category.name%></span>
+            <% } %>
+            <span><%= category.name %></span>
           </a>
         </li>
-        <%})%>
+        <% }) %>
       </ul>
-      <%}%>
+      <% } %> <% } else { %>
+      <form action="/ads/create" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="lat" id="lat" />
+        <input type="hidden" name="lng" id="lng" />
+        <label>Address</label>
+        <div
+          id="map"
+          style="width: 90%; height: 400px; margin-inline: auto"
+        ></div>
+        <label>Images</label>
+        <div class="p-2">
+          <input type="file" multiple name="images" class="form-control" />
+        </div>
+        <label>Title of Advertisment</label>
+        <div class="p-2">
+          <input
+            type="text"
+            name="ad-title"
+            placeholder="Please write a title for your advertisment."
+            class="form-control"
+          />
+        </div>
+        <label>Description</label>
+        <div class="p-2">
+          <textarea
+            class="form-control"
+            name="description"
+            placeholder="Please write more details about your product or service."
+          ></textarea>
+        </div>
+        <% options.forEach(option => { %>
+        <label><%= option.title %><%= option.required ? " *" : "" %></label>
+
+        <% if (option.type === "array") { %>
+        <div class="p-2">
+          <select name="<%= option.title %>" class="form-select">
+            <% option.enum.forEach(item => { %>
+            <option value="<%= item %>"><%= item %></option>
+            <% }) %>
+          </select>
+        </div>
+        <% } else if (option.type === "boolean") { %>
+        <div class="p-2">
+          <select name="<%= option.title %>" class="form-select">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </div>
+        <% } else { %>
+        <div class="p-2">
+          <input
+            type="text"
+            name="<%= option.title %>"
+            placeholder="<%= option.guid %>"
+            class="form-control"
+          />
+        </div>
+        <% } %> <% }) %>
+
+        <button type="submit" class="btn btn-danger">Submit</button>
+      </form>
+      <script>
+        function initMap() {
+          const initialPosition = { lat: 48.2082, lng: 16.3738 }; // Vienna
+          const map = new google.maps.Map(document.getElementById("map"), {
+            center: initialPosition,
+            zoom: 12,
+          });
+          const marker = new google.maps.Marker({
+            position: initialPosition,
+            map: map,
+            draggable: true,
+          });
+
+          map.addListener("click", (event) => {
+            const clickedLatLng = event.latLng;
+            marker.setPosition(clickedLatLng);
+            document.getElementById("lat").value = clickedLatLng.lat();
+            document.getElementById("lng").value = clickedLatLng.lng();
+            console.log(
+              "Clicked location:",
+              clickedLatLng.lat(),
+              clickedLatLng.lng()
+            );
+          });
+        }
+      </script>
+
+      <script
+        async
+        defer
+        src="https://maps.googleapis.com/maps/api/js?key=<%= google_api_key %>&callback=initMap"
+      ></script>
+      <% } %>
     </div>
   </div>
 </div>
