@@ -17,6 +17,9 @@ class AdsService {
         const options = await this.#optionModel.find({category:id})
         return options
     }
+    async createAd (data){
+        return this.#model.create(data)
+    }
 }
 
 module.exports = new AdsService()

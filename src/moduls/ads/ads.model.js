@@ -2,7 +2,7 @@ const {Schema,Types, model} = require("mongoose")
 
 const AdsSchema = new Schema({
     title: {type: String, required: true},
-    content: {type: String, required: true},
+    description: {type: String, required: true},
     category: {type: Types.ObjectId, ref: "Category", required: true},
     province: {type: String, required: false},
     city: {type: String, required: false},
@@ -10,6 +10,7 @@ const AdsSchema = new Schema({
     address: {type: String, required: false},
     coordinate: {type: [Number], required: true},
     images: {type: [String], required: false, default: []},
+    options: {type: Object, default : {}},
 })
 
 const AdsModel = model("ad", AdsSchema)
