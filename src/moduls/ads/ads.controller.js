@@ -5,6 +5,7 @@ const createHttpError = require("http-errors")
 const { Types } = require("mongoose")
 const HttpCodes = require("http-codes");
 const AdsMessage = require("./ads.messages")
+const { getDetailedAddress, removeItemsFromATarget } = require("../../common/utils/functions")
 
 
 class AdsController {
@@ -43,16 +44,22 @@ class AdsController {
     }
     async create(req,res,next){
         try {
-           console.log(req.body) 
+            const images = req?.files?.map(image => image?.path?.slice(7))
            const {lat,lng,title,description,categoryId} = req.body
-           delete req.body["lat"]
-           delete req.body["lng"]
-           delete req.body["title"]
-           delete req.body["description"]
-           delete req.body["categoryId"]
-           const options = req.body
+           const {complitedAddress,address,country,city,district} = await getDetailedAddress(lat,lng)
+           const options = removeItemsFromATarget(req.body,["lat","lng","title","description","categoryId"])
            await this.#service.createAd({
-            title,description,coordinate:[lat,lng], category: new Types.ObjectId(categoryId),images:[],options
+            title,
+            description,
+            complitedAddress,
+            address,
+            city,
+            country,
+            district,
+            coordinate:[lat,lng], 
+            category: new Types.ObjectId(categoryId),
+            images,
+            options
            })
            return res.status(HttpCodes.CREATED).json({
             message : AdsMessage.Create
